@@ -1,0 +1,7 @@
+<nav id="sidebar" ng-show="hasNotes()">
+  <ul>
+    <li ng-repeat="note in notes" ng-click="loadNote(note)">
+      {{ note.title }}
+    </li>
+  </ul>
+</nav>
