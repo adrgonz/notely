@@ -36,8 +36,20 @@ noteApp.controller('NotesController', ['$scope','NotesBackend',function($scope, 
     return JSON.parse(JSON.stringify(note));
   };
 
+  $scope.buttonText = function() {
+      if ($scope.note.id) {
+        return "Update Note";
+      } else {
+        return "Create Note"
+      }
+  };
+
   $scope.commit = function() {
-    NotesBackend.postNote($scope.note, self.assignNotes);
+      if ($scope.note.id) {
+        NotesBackend.editNote($scope.note, self.assignNotes);
+      } else {
+        NotesBackend.postNote($scope.note, self.assignNotes);
+    }
   };
 
   $scope.hasNotes = function() {

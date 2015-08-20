@@ -18,14 +18,34 @@ app.service('NotesBackend', ['$http', function NotesBackend($http) {
        });
   };
 
+  mine.editNote = function(noteData, callback) {
+    //  post a new note to the api
+    $http.put(nevernoteBasePath + 'notes/' + noteData.id, {
+      api_key: apiKey,
+      note: noteData
+    }).success( function(updatedNoteData) {
+      mine.replaceNote(updatedNoteData.note, callback);
+    });
+  };
+
   mine.postNote = function(noteData, callback) {
     //  post a new note to the api
     $http.post(nevernoteBasePath + 'notes', {
       api_key: apiKey,
       note: noteData
-    }).success( function(newNoteData) {
-      notes.unshift(newNoteData.note);
+    }).success( function(updatedNoteData) {
+      notes.unshift(updatedNoteData.note);
       callback(notes);
     });
+  };
+
+  mine.replaceNote = function(updatedNoteData, callback) {
+    for(var i=0; i < notes.length; i++) {
+      if (notes[i].id === updatedNoteData.id) {
+         notes[i] = updatedNoteData;
+         callback(notes);   //  wth just happened here??
+         return updatedNoteData;
+      }
+    }
   };
 }]);
